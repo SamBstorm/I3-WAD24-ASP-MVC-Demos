@@ -33,12 +33,18 @@ namespace Demo_ASP_01
                 pattern: "conditions",
                 defaults: new { Controller = "Home", Action = "Privacy" }
                 );
-
+            /* // Plus nécessaire quand on utilise un RouteAttribute
             app.MapControllerRoute(
                 name: "additionRoute",
                 pattern: "Home/Addition/{nb1}/{nb2}",
                 defaults: new { Controller = "Home", Action = "Addition" }
                 );
+
+            app.MapControllerRoute(
+                name : "plusRoute",
+                pattern: "{nb1}/plus/{nb2}",
+                defaults : new { controller = "Home", Action = "addition" }
+                );*/
 
             app.MapControllerRoute(
                 name: "default",

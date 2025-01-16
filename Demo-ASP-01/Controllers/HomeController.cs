@@ -28,6 +28,8 @@ namespace Demo_ASP_01.Controllers
             return $"Mon chiffre porte-bonheur est le : {id}";
         }
 
+        [Route("Home/Addition/{nb1}/{nb2}")]
+        [Route("{nb1}/plus/{nb2}")]
         public int Addition(int nb1, int nb2)
         {
             return nb1 + nb2;
