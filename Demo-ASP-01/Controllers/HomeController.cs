@@ -15,6 +15,7 @@ namespace Demo_ASP_01.Controllers
 
         public IActionResult Index()
         {
+            _logger.LogError($"Attention, utilisation de l'Action Index du controller Home à {DateTime.Now.ToShortTimeString()}");
             return View();
         }
 
