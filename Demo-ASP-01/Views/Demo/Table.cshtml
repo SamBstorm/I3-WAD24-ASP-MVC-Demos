@@ -1,0 +1,23 @@
+﻿@{
+    int table = 0;
+    if(ViewData.ContainsKey("table")){
+        table = (int)ViewData["table"];
+    }
+}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Demo ASP MVC : Table</title>
+</head>
+<body>
+    <h1>Demo ASP MVC</h1>
+    <h2>Table de @table</h2>
+    <ul>
+        @for (int i = 1; i <= 10; i++)
+        {
+            <li>@i X @table = @(table * i)</li>
+        }
+    </ul>
+</body>
+</html>

@@ -11,5 +11,13 @@ namespace Demo_ASP_01.Controllers
             //Dans le cas où le nom de la vue ne correspond pas au nom de l'action
             //return View("IndexOld");
         }
+
+        [Route("Demo/Table/{nb}")]
+        public IActionResult Table(int nb)
+        {
+            ViewData["table"] = nb;
+            return View();
+        }
+
     }
 }
