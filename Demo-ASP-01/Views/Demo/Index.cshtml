@@ -1,0 +1,72 @@
+﻿@{
+    int nb1 = 3, nb2 = 5;
+    List<string> names = new List<string>
+    {
+        "Kahoula",
+        "Charifa",
+        "Jessica",
+        "Mélusine",
+        "Dorothée",
+        "Jenny",
+        "Leslie",
+        "Anaïs",
+        "Debby",
+        "Émilie"
+    };
+
+    string PlurielOuSingulier<T>(IEnumerable<T> values){
+        return (values.Count() > 1) ? "s" : "";
+    }
+
+    void ListerEleves(IEnumerable<string> names){
+        @:<ul>
+        foreach (string name in names)
+        {
+            @:<li>@name</li>
+        }
+        @:</ul>
+    }
+
+    void ListerEleves2(IEnumerable<string> names){
+        <ul>
+            @{
+                foreach (string name in names)
+                {
+                    <li>@name</li>
+                }
+            }
+        </ul>
+    }
+}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Demo ASP MVC : Index</title>
+</head>
+<body>
+    <h1>Demo ASP MVC</h1>
+    <h2>Index</h2>
+    <p>Par le contrôleur DEMO, nous avons accédé à l'action INDEX, qui a trouvé cette vue dans /views/demo/index.cshmtl</p>
+
+    <p>Il est actuellement @DateTime.Now.ToString("hh:mm:ss")</p>
+
+    <p>@nb1 + @nb2 = @(nb1 + nb2)</p>
+
+    <p>Actuellement, vous êtes @names.Count() élève@(PlurielOuSingulier(names)) en classe.</p>
+    <h3>A l'aide de fonction utilisant @@:</h3>
+    @{ListerEleves(names);}
+    <h3>A l'aide de fonction utilisant templating method</h3>
+    @{ListerEleves2(names);}
+    <h3>Sans l'aide de fonction, mais avec des blocs conditionnels et itératifs</h3>
+    @if(names.Count > 0){
+        <ul>
+            @foreach(string name in names){
+                <li>@name</li>
+            }
+        </ul>
+    }
+    else{
+        <p>Pas d'élèves à lister...</p>
+    }
+</body>
+</html>
