@@ -3,6 +3,11 @@
     if(ViewData.ContainsKey("table")){
         table = (int)ViewData["table"];
     }
+
+    int dynamicTable = 0;
+    if (ViewData.ContainsKey("table")){
+        dynamicTable = ViewBag.table;
+    }
 }
 
 <!DOCTYPE html>
@@ -13,11 +18,20 @@
 <body>
     <h1>Demo ASP MVC</h1>
     <h2>Table de @table</h2>
+    <h3>A l'aide du ViewData</h3>
     <ul>
         @for (int i = 1; i <= 10; i++)
         {
             <li>@i X @table = @(table * i)</li>
         }
     </ul>
+    <h3>A l'aide du ViewBag</h3>
+    <ul>
+        @for (int i = 1; i <= 10; i++)
+        {
+            <li>@i X @dynamicTable = @(dynamicTable * i)</li>
+        }
+    </ul>
+
 </body>
 </html>

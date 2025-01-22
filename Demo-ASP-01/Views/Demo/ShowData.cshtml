@@ -1,0 +1,16 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Demo ASP MVC : ShowData</title>
+</head>
+<body>
+    <h1>Demo ASP MVC</h1>
+    <h2>Voici votre data :</h2>
+    @if(TempData.ContainsKey("data")){
+        <p>@((string)TempData["data"])</p>
+    }
+    else{
+        <p>Pas de données sauvegardées... 🥺</p>
+    }
+</body>
+</html>
