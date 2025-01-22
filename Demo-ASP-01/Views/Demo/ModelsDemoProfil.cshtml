@@ -1,0 +1,14 @@
+﻿@using Demo_ASP_01.Models
+@model PersonneDetails
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Demo ASP MVC : @ViewData["Title"]</title>
+</head>
+<body>
+    <h1>Demo ASP MVC</h1>
+    <h2>@Model.FirstName @Model.LastName</h2>
+    <h3>Né le @Model.BirthDate.ToString("dd MMMM yyyy")</h3>
+    
+</body>
+</html>

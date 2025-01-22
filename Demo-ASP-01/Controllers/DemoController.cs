@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Demo_ASP_01.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Demo_ASP_01.Controllers
 {
@@ -6,6 +7,34 @@ namespace Demo_ASP_01.Controllers
     {
         [ViewData]
         public string Title { get;set; }
+        private static Dictionary<int,PersonneDetails> _users = new Dictionary<int, PersonneDetails>() {
+            { 1, new PersonneDetails() { LastName = "Willis", FirstName = "Bruce", BirthDate = new DateOnly(1954,5,13)} },
+            { 2, new PersonneDetails() { LastName = "Bassinger", FirstName = "Kim", BirthDate = new DateOnly(1966,6,6)} }
+        };
+
+        private static List<MessageDetails> _messages = new List<MessageDetails>() {
+            new MessageDetails(){
+                Sender = _users[1],
+                Receiver = _users[2],
+                SendedDate = DateTime.Now.AddHours(-5),
+                IsReceived = true,
+                Content = "Coucou Kim! J'ai un nouveau film, veux-tu en faire parti?"
+            },
+            new MessageDetails(){
+                Sender = _users[2],
+                Receiver = _users[1],
+                SendedDate = DateTime.Now.AddHours(-3),
+                IsReceived = true,
+                Content = "Salut Bruce! Tu sais bien que je ne veux plus faire de film d'action..."
+            },
+            new MessageDetails(){
+                Sender = _users[1],
+                Receiver = _users[2],
+                SendedDate = DateTime.Now.AddHours(-1),
+                IsReceived = false,
+                Content = "Dommage, il y avait un beau cachet!"
+            },
+        };
         public IActionResult Index()
         {
             Title = "Accueil";
@@ -59,6 +88,20 @@ namespace Demo_ASP_01.Controllers
                 TempData.Keep("data");
             }
             return View();
+        }
+
+        public IActionResult ModelsDemoProfil(int id)
+        {
+            if (!_users.ContainsKey(id)) return RedirectToAction(nameof(Index));
+            PersonneDetails model = _users[id];
+            return View(model);
+        }
+
+        public IActionResult ModelsDemoConversation()
+        {
+            IEnumerable<MessageDetails> model = _messages;
+            if (model is null || model.Count() == 0) return RedirectToAction(nameof(Index));
+            return View(model);
         }
     }
 }

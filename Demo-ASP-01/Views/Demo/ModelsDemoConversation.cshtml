@@ -1,0 +1,21 @@
+﻿@using Demo_ASP_01.Models
+@using System.Collections.Generic
+@model IEnumerable<MessageDetails>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Demo ASP MVC : @ViewData["Title"]</title>
+</head>
+<body>
+    <h1>Demo ASP MVC</h1>
+    @foreach(MessageDetails msg in Model){
+        <div>
+            <p>@msg.Sender.FirstName @msg.Sender.LastName :</p>
+            <p>(envoyé à @msg.Receiver.FirstName @msg.Receiver.LastName le @msg.SendedDate.ToString("dd/MM/yyyy hh:mm")</p>
+            <p>@msg.Content</p>
+            <p>@((msg.IsReceived ? "✔️" : "❌"))</p>
+        </div>
+    }
+
+</body>
+</html>
