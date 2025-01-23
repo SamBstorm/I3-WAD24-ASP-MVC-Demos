@@ -1,4 +1,5 @@
 ﻿using Demo_ASP_01.Models;
+using Demo_ASP_01.Models.Demo;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demo_ASP_01.Controllers
@@ -102,6 +103,42 @@ namespace Demo_ASP_01.Controllers
             IEnumerable<MessageDetails> model = _messages;
             if (model is null || model.Count() == 0) return RedirectToAction(nameof(Index));
             return View(model);
+        }
+
+        /// <summary>
+        /// Permet d'afficher le formulaire vide
+        /// </summary>
+        /// <returns>IActionResult : Vue HTML/CSS du formulaire</returns>
+        [HttpGet("Demo/Forms")]
+        public IActionResult FormsDemo()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Permet de traiter les données du formulaire valider par l'utilisateur
+        /// </summary>
+        /// <param name="form">Les données du fomulaire</param>
+        /// <returns>IActionResult : Redirige vers l'Index du DemoController</returns>
+        [HttpPost("Demo/Forms")]
+        public IActionResult FormsDemo(FormsDemoForm form)
+        {
+            try
+            {
+                if (!ModelState.IsValid) throw new ArgumentException();
+                PersonneDetails data = new PersonneDetails()
+                {
+                    LastName = form.LastName,
+                    FirstName = form.FirstName,
+                    BirthDate = form.BirthDate
+                };
+                _users.Add(_users.Keys.Max() + 1, data);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex) {
+                TempData["errorMessage"] = ex.Message;
+                return View();
+            }
         }
     }
 }

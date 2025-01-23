@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Demo ASP MVC : @ViewData["Title"]</title>
+</head>
+<body>
+    <h1>Demo ASP MVC</h1>
+    @if(TempData.ContainsKey("errorMessage")){
+        <div style="background-color : #FF7777; color : #880000">
+            <p>@TempData["errorMessage"]</p>
+        </div>
+    }
+    <h2>Démonstrations des formulaires</h2>
+    <form method="post">
+        <div>
+            <label for="firstName">Prénom : </label>
+            <input id="firstName" name="firstName" type="text"/>
+        </div>
+        <div>
+            <label for="lastName">Nom : </label>
+            <input id="lastName" name="lastName" type="text" />
+        </div>
+        <div>
+            <label for="birthDate">Date de naissance : </label>
+            <input id="birthDate" name="birthDate" type="date" />
+        </div>
+        <div>
+            <button type="submit">Enrgistrer</button>
+            <button type="reset">Vider formulaire</button>
+        </div>
+    </form>
+</body>
+</html>
