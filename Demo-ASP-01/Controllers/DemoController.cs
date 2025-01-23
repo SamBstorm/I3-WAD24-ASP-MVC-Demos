@@ -1,4 +1,5 @@
-﻿using Demo_ASP_01.Models;
+﻿using Demo_ASP_01.Handlers;
+using Demo_ASP_01.Models;
 using Demo_ASP_01.Models.Demo;
 using Microsoft.AspNetCore.Mvc;
 
@@ -125,6 +126,14 @@ namespace Demo_ASP_01.Controllers
         {
             try
             {
+                /*ValidationHandler.Required(ModelState, form.LastName, nameof(form.LastName));*/
+                ModelState.Required(form.LastName, nameof(form.LastName));
+                ModelState.Required(form.FirstName, nameof(form.FirstName));
+                ModelState.Required(form.BirthDate, nameof(form.BirthDate));
+                ModelState.MinLenght(form.LastName, nameof(form.LastName), 2);
+                ModelState.MinLenght(form.FirstName, nameof(form.FirstName), 2);
+                ModelState.MaxLenght(form.LastName, nameof(form.LastName), 64);
+                ModelState.MaxLenght(form.FirstName, nameof(form.FirstName), 64);
                 if (!ModelState.IsValid) throw new ArgumentException();
                 PersonneDetails data = new PersonneDetails()
                 {

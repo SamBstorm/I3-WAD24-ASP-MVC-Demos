@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Mvc.ModelBinding
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <title>Demo ASP MVC : @ViewData["Title"]</title>
@@ -10,19 +11,55 @@
             <p>@TempData["errorMessage"]</p>
         </div>
     }
+    @if(!ViewContext.ModelState.IsValid){
+        <div style="background-color : #FF7777; color : #880000">
+            <p>Votre formulaire contient @ViewContext.ModelState.ErrorCount erreur(s) :</p>
+            <ul>
+                @foreach(KeyValuePair<string,ModelStateEntry> entry in ViewContext.ModelState){
+                    if(entry.Value.Errors.Count > 0){
+                        <li>@entry.Key : 
+                            <ul>
+                                @foreach(ModelError error in entry.Value.Errors){
+                                    <li>@error.ErrorMessage</li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                }
+
+            </ul>
+        </div>
+    }
     <h2>Démonstrations des formulaires</h2>
     <form method="post">
         <div>
             <label for="firstName">Prénom : </label>
             <input id="firstName" name="firstName" type="text"/>
+            @if(ViewContext.ModelState.ContainsKey("firstName")){
+                @foreach (ModelError error in ViewContext.ModelState["firstName"].Errors){
+                    <br /><span style="color : #880000">@error.ErrorMessage</span>
+                }
+            }
         </div>
         <div>
             <label for="lastName">Nom : </label>
             <input id="lastName" name="lastName" type="text" />
+            @if(ViewContext.ModelState.ContainsKey("lastName")){
+                @foreach (ModelError error in ViewContext.ModelState["lastName"].Errors)
+                {
+                    <br /><span style="color : #880000">@error.ErrorMessage</span>
+                }
+            }
         </div>
         <div>
             <label for="birthDate">Date de naissance : </label>
             <input id="birthDate" name="birthDate" type="date" />
+            @if(ViewContext.ModelState.ContainsKey("birthDate")){
+                @foreach (ModelError error in ViewContext.ModelState["birthDate"].Errors)
+                {
+                    <br /><span style="color : #880000">@error.ErrorMessage</span>
+                }
+            }
         </div>
         <div>
             <button type="submit">Enrgistrer</button>
