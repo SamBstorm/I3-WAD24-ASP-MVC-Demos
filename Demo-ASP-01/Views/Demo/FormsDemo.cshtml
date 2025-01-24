@@ -6,6 +6,7 @@
 <head>
     <title>Demo ASP MVC : @ViewData["Title"]</title>
     <link rel="stylesheet" type="text/css" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/site.css"/>
 </head>
 <body>
     <h1>Demo ASP MVC</h1>
@@ -32,7 +33,7 @@
 
             </ul>
         </div>*@
-        @Html.ValidationSummary(false,
+        @Html.ValidationSummary(true,
                 $"Votre formulaire contient {ViewContext.ModelState.ErrorCount} erreur(s) :",
                 new { @class = "alert alert-danger", style = "width : 75%; margin : 0 auto"}
         )
@@ -41,34 +42,45 @@
     <div class="row">
         <form method="post" class="col-6 container-md">
             <div class="mb-3">
+                <label for="title">Titre :</label>
+                @*<select name="title" class="form-select">
+                    <option value="none">Pas de titre</option>
+                    <option value="mme">Mme</option>
+                    <option value="mr">Mr</option>
+                    <option value="dr">Dr</option>
+                </select>*@
+                @Html.DropDownListFor( m => m.Title,
+                    new List<SelectListItem>(){
+                new SelectListItem() {Value = "none", Text="Pas de titre"},
+                new SelectListItem() {Value = "mme", Text="Mme"},
+                new SelectListItem() {Value = "mr", Text="Mr"},
+                new SelectListItem() {Value = "dr", Text="Dr"}
+                    },
+                    null, 
+                    new { @class="form-select"}
+                    )
+                @Html.ValidationMessageFor(m => m.Title, null, new {@class = "text-danger"})
+            </div>
+            <div class="mb-3">
                 <label for="firstName" class="form-label">Prénom : </label>
-                <input id="firstName" name="firstName" type="text" class="form-control"/>
-                @*@if(ViewContext.ModelState.ContainsKey("firstName")){
+                @*<input id="firstName" name="firstName" type="text" class="form-control"/>
+               @if(ViewContext.ModelState.ContainsKey("firstName")){
                     @foreach (ModelError error in ViewContext.ModelState["firstName"].Errors){
                         <br /><span class="text-danger">@error.ErrorMessage</span>
                     }
                 }*@
+                @Html.EditorFor(m => m.FirstName, new{ htmlAttributes = new {@class = "form-control"}})
                 @Html.ValidationMessageFor(m => m.FirstName, null, new {@class = "text-danger"})
             </div>
             <div class="mb-3">
                 <label for="lastName" class="form-label">Nom : </label>
-                <input id="lastName" name="lastName" type="text" class="form-control" />
-                @if(ViewContext.ModelState.ContainsKey("lastName")){
-                    @foreach (ModelError error in ViewContext.ModelState["lastName"].Errors)
-                    {
-                        <br /><span class="text-danger">@error.ErrorMessage</span>
-                    }
-                }
+                @Html.EditorFor(m => m.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.LastName, null, new {@class = "text-danger"})
             </div>
             <div class="mb-3">
                 <label for="birthDate" class="form-label">Date de naissance : </label>
-                <input id="birthDate" name="birthDate" type="date" class="form-control" />
-                @if(ViewContext.ModelState.ContainsKey("birthDate")){
-                    @foreach (ModelError error in ViewContext.ModelState["birthDate"].Errors)
-                    {
-                        <br /><span class="text-danger">@error.ErrorMessage</span>
-                    }
-                }
+                @Html.EditorFor(m => m.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.BirthDate, "Le champ Date de naissance est invalide", new { @class = "text-danger" })
             </div>
         <div>
             <button type="submit" class="btn btn-success">Enregistrer</button>
