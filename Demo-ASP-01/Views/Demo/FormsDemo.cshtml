@@ -1,8 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Demo_ASP_01.Models.Demo
+@model FormsDemoForm
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <title>Demo ASP MVC : @ViewData["Title"]</title>
+    <link rel="stylesheet" type="text/css" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
 </head>
 <body>
     <h1>Demo ASP MVC</h1>
@@ -12,7 +15,7 @@
         </div>
     }
     @if(!ViewContext.ModelState.IsValid){
-        <div style="background-color : #FF7777; color : #880000">
+        @*<div style="background-color : #FF7777; color : #880000">
             <p>Votre formulaire contient @ViewContext.ModelState.ErrorCount erreur(s) :</p>
             <ul>
                 @foreach(KeyValuePair<string,ModelStateEntry> entry in ViewContext.ModelState){
@@ -28,43 +31,52 @@
                 }
 
             </ul>
-        </div>
+        </div>*@
+        @Html.ValidationSummary(false,
+                $"Votre formulaire contient {ViewContext.ModelState.ErrorCount} erreur(s) :",
+                new { @class = "alert alert-danger", style = "width : 75%; margin : 0 auto"}
+        )
     }
     <h2>Démonstrations des formulaires</h2>
-    <form method="post">
-        <div>
-            <label for="firstName">Prénom : </label>
-            <input id="firstName" name="firstName" type="text"/>
-            @if(ViewContext.ModelState.ContainsKey("firstName")){
-                @foreach (ModelError error in ViewContext.ModelState["firstName"].Errors){
-                    <br /><span style="color : #880000">@error.ErrorMessage</span>
+    <div class="row">
+        <form method="post" class="col-6 container-md">
+            <div class="mb-3">
+                <label for="firstName" class="form-label">Prénom : </label>
+                <input id="firstName" name="firstName" type="text" class="form-control"/>
+                @*@if(ViewContext.ModelState.ContainsKey("firstName")){
+                    @foreach (ModelError error in ViewContext.ModelState["firstName"].Errors){
+                        <br /><span class="text-danger">@error.ErrorMessage</span>
+                    }
+                }*@
+                @Html.ValidationMessageFor(m => m.FirstName, null, new {@class = "text-danger"})
+            </div>
+            <div class="mb-3">
+                <label for="lastName" class="form-label">Nom : </label>
+                <input id="lastName" name="lastName" type="text" class="form-control" />
+                @if(ViewContext.ModelState.ContainsKey("lastName")){
+                    @foreach (ModelError error in ViewContext.ModelState["lastName"].Errors)
+                    {
+                        <br /><span class="text-danger">@error.ErrorMessage</span>
+                    }
                 }
-            }
-        </div>
-        <div>
-            <label for="lastName">Nom : </label>
-            <input id="lastName" name="lastName" type="text" />
-            @if(ViewContext.ModelState.ContainsKey("lastName")){
-                @foreach (ModelError error in ViewContext.ModelState["lastName"].Errors)
-                {
-                    <br /><span style="color : #880000">@error.ErrorMessage</span>
+            </div>
+            <div class="mb-3">
+                <label for="birthDate" class="form-label">Date de naissance : </label>
+                <input id="birthDate" name="birthDate" type="date" class="form-control" />
+                @if(ViewContext.ModelState.ContainsKey("birthDate")){
+                    @foreach (ModelError error in ViewContext.ModelState["birthDate"].Errors)
+                    {
+                        <br /><span class="text-danger">@error.ErrorMessage</span>
+                    }
                 }
-            }
-        </div>
+            </div>
         <div>
-            <label for="birthDate">Date de naissance : </label>
-            <input id="birthDate" name="birthDate" type="date" />
-            @if(ViewContext.ModelState.ContainsKey("birthDate")){
-                @foreach (ModelError error in ViewContext.ModelState["birthDate"].Errors)
-                {
-                    <br /><span style="color : #880000">@error.ErrorMessage</span>
-                }
-            }
-        </div>
-        <div>
-            <button type="submit">Enrgistrer</button>
-            <button type="reset">Vider formulaire</button>
+            <button type="submit" class="btn btn-success">Enregistrer</button>
+            <button type="reset" class="btn btn-warning">Vider formulaire</button>
+            @* <a href="/Demo/" class="btn btn-danger">Revenir en arrière</a> *@
+            @Html.ActionLink("Revenir en arrière", "Index", "Demo", null, new { @class = "btn btn-danger" })
         </div>
     </form>
+    </div>
 </body>
 </html>
