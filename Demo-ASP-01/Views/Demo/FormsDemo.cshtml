@@ -34,15 +34,17 @@
             </ul>
         </div>*@
         @Html.ValidationSummary(true,
-                $"Votre formulaire contient {ViewContext.ModelState.ErrorCount} erreur(s) :",
-                new { @class = "alert alert-danger", style = "width : 75%; margin : 0 auto"}
-        )
+                         $"Votre formulaire contient {ViewContext.ModelState.ErrorCount} erreur(s) :",
+                         new { @class = "alert alert-danger", style = "width : 75%; margin : 0 auto"}
+                 )
     }
     <h2>Démonstrations des formulaires</h2>
     <div class="row">
-        <form method="post" class="col-6 container-md">
+        @*<form method="post" class="col-6 container-md">*@
+        @using (Html.BeginForm(FormMethod.Post, new { @class = "col-6 container-md" }))
+        {
             <div class="mb-3">
-                <label for="title">Titre :</label>
+                @Html.LabelFor(m => m.Title)
                 @*<select name="title" class="form-select">
                     <option value="none">Pas de titre</option>
                     <option value="mme">Mme</option>
@@ -62,33 +64,35 @@
                 @Html.ValidationMessageFor(m => m.Title, null, new {@class = "text-danger"})
             </div>
             <div class="mb-3">
-                <label for="firstName" class="form-label">Prénom : </label>
-                @*<input id="firstName" name="firstName" type="text" class="form-control"/>
+                @*<label for="firstName" class="form-label">Prénom : </label>
+                <input id="firstName" name="firstName" type="text" class="form-control"/>
                @if(ViewContext.ModelState.ContainsKey("firstName")){
                     @foreach (ModelError error in ViewContext.ModelState["firstName"].Errors){
                         <br /><span class="text-danger">@error.ErrorMessage</span>
                     }
                 }*@
+                @Html.LabelFor(m => m.FirstName)
                 @Html.EditorFor(m => m.FirstName, new{ htmlAttributes = new {@class = "form-control"}})
                 @Html.ValidationMessageFor(m => m.FirstName, null, new {@class = "text-danger"})
             </div>
             <div class="mb-3">
-                <label for="lastName" class="form-label">Nom : </label>
+                @Html.LabelFor(m => m.LastName)
                 @Html.EditorFor(m => m.LastName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(m => m.LastName, null, new {@class = "text-danger"})
             </div>
             <div class="mb-3">
-                <label for="birthDate" class="form-label">Date de naissance : </label>
+                @Html.LabelFor(m => m.BirthDate)
                 @Html.EditorFor(m => m.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(m => m.BirthDate, "Le champ Date de naissance est invalide", new { @class = "text-danger" })
             </div>
-        <div>
+        <div class="btn-group">
             <button type="submit" class="btn btn-success">Enregistrer</button>
             <button type="reset" class="btn btn-warning">Vider formulaire</button>
             @* <a href="/Demo/" class="btn btn-danger">Revenir en arrière</a> *@
             @Html.ActionLink("Revenir en arrière", "Index", "Demo", null, new { @class = "btn btn-danger" })
         </div>
-    </form>
+    @* </form> *@
+    }
     </div>
 </body>
 </html>
