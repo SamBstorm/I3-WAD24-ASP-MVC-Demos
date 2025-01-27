@@ -155,5 +155,10 @@ namespace Demo_ASP_01.Controllers
                 //return View("FormsDemoHtml");
             }
         }
+
+        public IActionResult DLayout()
+        {
+            return View();
+        }
     }
 }

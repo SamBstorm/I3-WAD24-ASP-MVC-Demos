@@ -1,0 +1,16 @@
+﻿@{
+    Layout = "_Layout";
+}
+@section CSS{
+    <link rel="stylesheet" type="text/css" href="~/css/dark.css" />
+}
+@section Scripts{
+    <script src="/js/dlayout.js"></script>
+}
+@section DemoNav{
+    <li class ="nav-item">
+        <a class="nav-link text-dark" asp-action="Table" asp-controller="Demo" asp-route-nb="5">Voir la table de 5</a>
+    </li>
+}
+<h1 id="DLayoutTitle">Layout</h1>
+<p>Cette page est entouré d'un layout. Cette vue 'DLayout.cshtml' ne contient ni header, ni footer, ni menu de navigation, car le Layout les fournit.</p>
