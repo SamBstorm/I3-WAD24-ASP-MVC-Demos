@@ -1,0 +1,93 @@
+﻿@using Microsoft.AspNetCore.Mvc.ModelBinding
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Demo ASP MVC : @ViewData["Title"]</title>
+    <link rel="stylesheet" type="text/css" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/site.css"/>
+</head>
+<body>
+    <h1>Demo ASP MVC</h1>
+    @if(TempData.ContainsKey("errorMessage")){
+        <div style="background-color : #FF7777; color : #880000">
+            <p>@TempData["errorMessage"]</p>
+        </div>
+    }
+    @if(!ViewContext.ModelState.IsValid){
+        <div style="background-color : #FF7777; color : #880000">
+            <p>Votre formulaire contient @ViewContext.ModelState.ErrorCount erreur(s) :</p>
+            <ul>
+                @foreach(KeyValuePair<string,ModelStateEntry> entry in ViewContext.ModelState){
+                    if(entry.Value.Errors.Count > 0){
+                        <li>@entry.Key : 
+                            <ul>
+                                @foreach(ModelError error in entry.Value.Errors){
+                                    <li>@error.ErrorMessage</li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                }
+
+            </ul>
+        </div>
+    }
+    <h2>Démonstrations des formulaires</h2>
+    <div class="row">
+        <form method="post" class="col-6 container-md" action="/Demo/Forms">
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label"></label>
+                <select name="title" class="form-select">
+                    <option value="none">Pas de titre</option>
+                    <option value="mme">Mme</option>
+                    <option value="mr">Mr</option>
+                    <option value="dr">Dr</option>
+                </select>
+                @if (ViewContext.ModelState.ContainsKey("title"))
+                {
+                    @foreach (ModelError error in ViewContext.ModelState["title"].Errors)
+                    {
+                        <br /><span class="text-danger">@error.ErrorMessage</span>
+                    }
+                }
+            </div>
+            <div class="mb-3">
+                <label for="firstName" class="form-label">Prénom : </label>
+                <input id="firstName" name="firstName" type="text" class="form-control"/>
+                @if(ViewContext.ModelState.ContainsKey("firstName")){
+                    @foreach (ModelError error in ViewContext.ModelState["firstName"].Errors){
+                        <br /><span class="text-danger">@error.ErrorMessage</span>
+                    }
+                }
+            </div>
+            <div class="mb-3">
+                <label for="lastName" class="form-label">Nom de famille : </label>
+                <input id="lastName" name="lastName" type="text" class="form-control" />
+                @if (ViewContext.ModelState.ContainsKey("lastName"))
+                {
+                    @foreach (ModelError error in ViewContext.ModelState["lastName"].Errors)
+                    {
+                        <br /><span class="text-danger">@error.ErrorMessage</span>
+                    }
+                }
+            </div>
+            <div class="mb-3">
+                <label for="birthDate" class="form-label">Date de naissance : </label>
+                <input id="birthDate" name="birthDate" type="date" class="form-control" />
+                @if (ViewContext.ModelState.ContainsKey("birthDate"))
+                {
+                    @foreach (ModelError error in ViewContext.ModelState["birthDate"].Errors)
+                    {
+                        <br /><span class="text-danger">Le champ Date de naissance est invalide</span>
+                    }
+                }
+            </div>
+        <div class="btn-group">
+            <button type="submit" class="btn btn-success">Enregistrer</button>
+            <button type="reset" class="btn btn-warning">Vider formulaire</button>
+            <a href="/Demo/" class="btn btn-danger">Revenir en arrière</a>
+        </div>
+    </form>
+    </div>
+</body>
+</html>

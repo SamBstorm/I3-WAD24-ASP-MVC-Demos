@@ -1,6 +1,15 @@
 ﻿@using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Demo_ASP_01.Models.Demo
 @model FormsDemoForm
+
+@{
+    List<SelectListItem> titleItems = new List<SelectListItem>(){
+                new SelectListItem() {Value = "none", Text="Pas de titre"},
+                new SelectListItem() {Value = "mme", Text="Mme"},
+                new SelectListItem() {Value = "mr", Text="Mr"},
+                new SelectListItem() {Value = "dr", Text="Dr"}
+                    };
+}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -16,23 +25,6 @@
         </div>
     }
     @if(!ViewContext.ModelState.IsValid){
-        @*<div style="background-color : #FF7777; color : #880000">
-            <p>Votre formulaire contient @ViewContext.ModelState.ErrorCount erreur(s) :</p>
-            <ul>
-                @foreach(KeyValuePair<string,ModelStateEntry> entry in ViewContext.ModelState){
-                    if(entry.Value.Errors.Count > 0){
-                        <li>@entry.Key : 
-                            <ul>
-                                @foreach(ModelError error in entry.Value.Errors){
-                                    <li>@error.ErrorMessage</li>
-                                }
-                            </ul>
-                        </li>
-                    }
-                }
-
-            </ul>
-        </div>*@
         @Html.ValidationSummary(true,
                          $"Votre formulaire contient {ViewContext.ModelState.ErrorCount} erreur(s) :",
                          new { @class = "alert alert-danger", style = "width : 75%; margin : 0 auto"}
@@ -40,58 +32,37 @@
     }
     <h2>Démonstrations des formulaires</h2>
     <div class="row">
-        @*<form method="post" class="col-6 container-md">*@
         @using (Html.BeginForm(FormMethod.Post, new { @class = "col-6 container-md" }))
         {
             <div class="mb-3">
-                @Html.LabelFor(m => m.Title)
-                @*<select name="title" class="form-select">
-                    <option value="none">Pas de titre</option>
-                    <option value="mme">Mme</option>
-                    <option value="mr">Mr</option>
-                    <option value="dr">Dr</option>
-                </select>*@
+                @Html.LabelFor(m => m.Title, new { @class="form-label" })
                 @Html.DropDownListFor( m => m.Title,
-                    new List<SelectListItem>(){
-                new SelectListItem() {Value = "none", Text="Pas de titre"},
-                new SelectListItem() {Value = "mme", Text="Mme"},
-                new SelectListItem() {Value = "mr", Text="Mr"},
-                new SelectListItem() {Value = "dr", Text="Dr"}
-                    },
+                    titleItems,
                     null, 
                     new { @class="form-select"}
                     )
                 @Html.ValidationMessageFor(m => m.Title, null, new {@class = "text-danger"})
             </div>
             <div class="mb-3">
-                @*<label for="firstName" class="form-label">Prénom : </label>
-                <input id="firstName" name="firstName" type="text" class="form-control"/>
-               @if(ViewContext.ModelState.ContainsKey("firstName")){
-                    @foreach (ModelError error in ViewContext.ModelState["firstName"].Errors){
-                        <br /><span class="text-danger">@error.ErrorMessage</span>
-                    }
-                }*@
-                @Html.LabelFor(m => m.FirstName)
+                @Html.LabelFor(m => m.FirstName, new { @class = "form-label" })
                 @Html.EditorFor(m => m.FirstName, new{ htmlAttributes = new {@class = "form-control"}})
                 @Html.ValidationMessageFor(m => m.FirstName, null, new {@class = "text-danger"})
             </div>
             <div class="mb-3">
-                @Html.LabelFor(m => m.LastName)
-                @Html.EditorFor(m => m.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.LastName, new { @class="form-label" })
+                @Html.EditorFor(m => m.LastName, new { htmlAttributes = new { @class = "form-control"}})
                 @Html.ValidationMessageFor(m => m.LastName, null, new {@class = "text-danger"})
             </div>
             <div class="mb-3">
-                @Html.LabelFor(m => m.BirthDate)
+                @Html.LabelFor(m => m.BirthDate, new { @class="form-label" })
                 @Html.EditorFor(m => m.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(m => m.BirthDate, "Le champ Date de naissance est invalide", new { @class = "text-danger" })
             </div>
         <div class="btn-group">
             <button type="submit" class="btn btn-success">Enregistrer</button>
             <button type="reset" class="btn btn-warning">Vider formulaire</button>
-            @* <a href="/Demo/" class="btn btn-danger">Revenir en arrière</a> *@
             @Html.ActionLink("Revenir en arrière", "Index", "Demo", null, new { @class = "btn btn-danger" })
         </div>
-    @* </form> *@
     }
     </div>
 </body>

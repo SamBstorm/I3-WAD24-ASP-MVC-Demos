@@ -113,7 +113,9 @@ namespace Demo_ASP_01.Controllers
         [HttpGet("Demo/Forms")]
         public IActionResult FormsDemo()
         {
-            return View();
+            return View("FormsDemoTagHelper");
+            //return View("FormsDemoHtmlHelper");
+            //return View("FormsDemoHtml");
         }
 
         /// <summary>
@@ -148,7 +150,9 @@ namespace Demo_ASP_01.Controllers
             }
             catch (Exception ex) {
                 TempData["errorMessage"] = ex.Message;
-                return View();
+                return View("FormsDemoTagHelper");
+                //return View("FormsDemoHtmlHelper");
+                //return View("FormsDemoHtml");
             }
         }
     }
