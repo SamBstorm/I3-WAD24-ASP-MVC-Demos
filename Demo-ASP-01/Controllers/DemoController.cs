@@ -2,6 +2,7 @@
 using Demo_ASP_01.Models;
 using Demo_ASP_01.Models.Demo;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 namespace Demo_ASP_01.Controllers
 {
@@ -37,6 +38,13 @@ namespace Demo_ASP_01.Controllers
                 Content = "Dommage, il y avait un beau cachet!"
             },
         };
+        
+        private static List<UserDetails> _userList = new List<UserDetails>() {
+                new UserDetails(){ UserId = 1, FirstName = "Jhon", LastName = "Lennon", Email = "j.lennon@beatles.uk"},
+                new UserDetails(){ UserId = 2, FirstName = "Freddy", LastName = "Mercury", Email = "f.mercury@queen.uk"},
+                new UserDetails(){ UserId = 3, FirstName = "David", LastName = "Bowie", Email = "d.bowie@music.uk"}
+            };
+
         public IActionResult Index()
         {
             Title = "Accueil";
@@ -159,6 +167,47 @@ namespace Demo_ASP_01.Controllers
         public IActionResult DLayout()
         {
             return View();
+        }
+
+        public IActionResult UserList()
+        {
+            IEnumerable<UserListItem> model = _userList.Select(ud => new UserListItem() { UserId = ud.UserId, FirstName = ud.FirstName, LastName = ud.LastName });
+            return View(model);
+        }
+
+        public IActionResult UserDetails(int id)
+        {
+            UserDetails? model = _userList.Where(ud => ud.UserId == id).SingleOrDefault();
+            if (model is null) return RedirectToAction(nameof(UserList));
+            return View(model);
+        }
+
+        public IActionResult UserCreate()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult UserCreate(UserCreateForm form)
+        {
+            try
+            {
+                if (!ModelState.IsValid) throw new ArgumentException();
+                int id = _userList.Max(ud => ud.UserId);
+                _userList.Add(
+                    new UserDetails()
+                    {
+                        UserId = id + 1,
+                        FirstName = form.FirstName,
+                        LastName = form.LastName,
+                        Email = form.Email
+                    });
+                return RedirectToAction(nameof(UserDetails), new { id = id + 1 });
+            }
+            catch (Exception)
+            {
+                return View();
+            }
         }
     }
 }
