@@ -209,5 +209,44 @@ namespace Demo_ASP_01.Controllers
                 return View();
             }
         }
+
+        public IActionResult UserEdit(int id)
+        {
+            try
+            {
+                UserDetails? user = _userList.Where(ud => ud.UserId == id).SingleOrDefault();
+                if(user is null) throw new ArgumentOutOfRangeException(nameof(id));
+                UserEditForm model = new UserEditForm() { 
+                    FirstName = user.FirstName,
+                    LastName = user.LastName
+                };
+                return View(model);
+            }
+            catch
+            {
+                return RedirectToAction(nameof(UserList));
+            }
+        }
+
+        [HttpPost]
+        public IActionResult UserEdit(int id, UserEditForm form)
+        {
+            try
+            {
+                UserDetails? user = _userList.Where(ud => ud.UserId == id).SingleOrDefault();
+                if (user is null) throw new ArgumentOutOfRangeException(nameof(id));
+                if (!ModelState.IsValid) throw new ArgumentException();
+                user.FirstName = form.FirstName;
+                user.LastName = form.LastName;
+                return RedirectToAction(nameof(UserDetails), new { id });
+            }
+            catch (ArgumentOutOfRangeException ex) {
+                return RedirectToAction(nameof(UserList));
+            }
+            catch (Exception)
+            {
+                return RedirectToAction(nameof(UserEdit), new { id = id });
+            }
+        }
     }
 }
